@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu ve Saat</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #9166CC;
+        }
+        .device-container {
+            background-color: #ffffff;
+            border-radius: 50px;
+            padding: 20px;
+        }
+        .bg-white-rounded-lg {
+            background-color: #9166CC;
+            border-radius: 30px;
+            width: 900px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .clock {
+            width: 280px;
+            height: 280px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #9166CC;
+            border-radius: 50%;
+        }
+        .center-dot {
+            width: 10px;
+            height: 10px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+        .clock .hour-hand, .clock .minute-hand {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            background: #FFFFFF;
+            border-radius: 6px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        .clock .hour-hand {
+            width: 6px;
+            height: 60px;
+            transform: rotate(0deg);
+        }
+        .clock .minute-hand {
+            width: 4px;
+            height: 100px;
+            transform: rotate(0deg);
+        }
+        .numbers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .number {
+            position: absolute;
+            text-align: center;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            color: #ffffff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .number:nth-child(1) { transform: rotate(30deg) translate(130px) rotate(-30deg); }
+        .number:nth-child(2) { transform: rotate(60deg) translate(130px) rotate(-60deg); }
+        .number:nth-child(3) { transform: rotate(90deg) translate(130px) rotate(-90deg); }
+        .number:nth-child(4) { transform: rotate(120deg) translate(130px) rotate(-120deg); }
+        .number:nth-child(5) { transform: rotate(150deg) translate(130px) rotate(-150deg); }
+        .number:nth-child(6) { transform: rotate(180deg) translate(130px) rotate(-180deg); }
+        .number:nth-child(7) { transform: rotate(210deg) translate(130px) rotate(-210deg); }
+        .number:nth-child(8) { transform: rotate(240deg) translate(130px) rotate(-240deg); }
+        .number:nth-child(9) { transform: rotate(270deg) translate(130px) rotate(-270deg); }
+        .number:nth-child(10) { transform: rotate(300deg) translate(130px) rotate(-300deg); }
+        .number:nth-child(11) { transform: rotate(330deg) translate(130px) rotate(-330deg); }
+        .number:nth-child(12) { transform: rotate(0deg) translate(130px) rotate(0deg); }
+        #tarih {
+            color: #ffffff;
+            font-size: 2.5em;
+        }
+        #konum {
+            color: #ffffff;
+            font-size: 1.5em;
+        }
+        #hava-durumu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: #ffffff;
+        }
+        #konum-formu {
+            margin-bottom: 20px;
+        }
+        #sehir-secim {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        #veri-getir {
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-purple-500 flex items-center justify-center min-h-screen">
+    <div class="device-container flex flex-col items-center justify-center">
+        <form id="konum-formu" class="flex mb-4">
+            <select id="sehir-secim" class="mr-2 p-2 bg-white rounded">
+                <option value="">Şehir Seçin</option>
+                <!-- Şehirler dinamik olarak eklenecek -->
+            </select>
+            <button type="button" id="veri-getir" class="ml-2 p-2 bg-white rounded">Veri Getir</button>
+        </form>
+        <div class="bg-white-rounded-lg shadow-lg p-8 flex flex-col items-center relative">
+            <div class="absolute right-5 top-5 w-3 h-3 bg-gray-300 rounded-full"></div>
+            <div class="flex justify-between items-center w-full h-full">
+                <div class="clock-container relative w-1/2 h-full flex items-center justify-center">
+                    <div class="clock relative">
+                        <div class="center-dot"></div>
+                        <div class="hour-hand"></div>
+                        <div class="minute-hand"></div>
+                        <div class="numbers">
+                            <div class="number" style="transform: rotate(30deg) translate(130px) rotate(-30deg);">4</div>
+                            <div class="number" style="transform: rotate(60deg) translate(130px) rotate(-60deg);">5</div>
+                            <div class="number" style="transform: rotate(90deg) translate(130px) rotate(-90deg);">6</div>
+                            <div class="number" style="transform: rotate(120deg) translate(130px) rotate(-120deg);">7</div>
+                            <div class="number" style="transform: rotate(150deg) translate(130px) rotate(-150deg);">8</div>
+                            <div class="number" style="transform: rotate(180deg) translate(130px) rotate(-180deg);">9</div>
+                            <div class="number" style="transform: rotate(210deg) translate(130px) rotate(-210deg);">10</div>
+                            <div class="number" style="transform: rotate(240deg) translate(130px) rotate(-240deg);">11</div>
+                            <div class="number" style="transform: rotate(270deg) translate(130px) rotate(-270deg);">12</div>
+                            <div class="number" style="transform: rotate(300deg) translate(130px) rotate(-300deg);">1</div>
+                            <div class="number" style="transform: rotate(330deg) translate(130px) rotate(-330deg);">2</div>
+                            <div class="number" style="transform: rotate(0deg) translate(130px) rotate(0deg);">3</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right ml-8 w-1/2 h-full flex flex-col justify-center">
+                    <div id="konum" class="text-white text-xl">İstanbul, Türkiye</div>
+                    <div id="tarih" class="text-3xl font-bold text-white mt-2">Perşembe, 27 Haziran 2024</div>
+                    <div id="hava-durumu" class="flex items-center justify-center mt-2">
+                        <img id="hava-durumu-ikonu" src="https://img.icons8.com/color/48/000000/partly-cloudy-day.png" alt="hava durumu ikonu" class="w-8 h-8 mr-2"/>
+                        <div id="sicaklik" class="text-2xl text-white">15°C</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('veri-getir').addEventListener('click', veriGetir);
+
+        const sehirler = [
+            'Adana', 'Adıyaman', 'Afyonkarahisar', 'Ağrı', 'Aksaray', 'Amasya', 'Ankara', 'Antalya', 'Ardahan', 'Artvin',
+            'Aydın', 'Balıkesir', 'Bartın', 'Batman', 'Bayburt', 'Bilecik', 'Bingöl', 'Bitlis', 'Bolu', 'Burdur', 'Bursa',
+            'Çanakkale', 'Çankırı', 'Çorum', 'Denizli', 'Diyarbakır', 'Düzce', 'Edirne', 'Elazığ', 'Erzincan', 'Erzurum',
+            'Eskişehir', 'Gaziantep', 'Giresun', 'Gümüşhane', 'Hakkari', 'Hatay', 'Iğdır', 'Isparta', 'İstanbul', 'İzmir',
+            'Kahramanmaraş', 'Karabük', 'Karaman', 'Kars', 'Kastamonu', 'Kayseri', 'Kırıkkale', 'Kırklareli', 'Kırşehir',
+            'Kilis', 'Kocaeli', 'Konya', 'Kütahya', 'Malatya', 'Manisa', 'Mardin', 'Mersin', 'Muğla', 'Muş', 'Nevşehir',
+            'Niğde', 'Ordu', 'Osmaniye', 'Rize', 'Sakarya', 'Samsun', 'Şanlıurfa', 'Siirt', 'Sinop', 'Şırnak', 'Sivas',
+            'Tekirdağ', 'Tokat', 'Trabzon', 'Tunceli', 'Uşak', 'Van', 'Yalova', 'Yozgat', 'Zonguldak'
+        ];
+
+        document.addEventListener('DOMContentLoaded', sehirSecenekleriGuncelle);
+
+        function sehirSecenekleriGuncelle() {
+            const sehirSecim = document.getElementById('sehir-secim');
+            sehirSecim.innerHTML = '<option value="">Şehir Seçin</option>';
+            sehirler.forEach(sehir => {
+                const option = document.createElement('option');
+                option.value = sehir;
+                option.textContent = sehir;
+                sehirSecim.appendChild(option);
+            });
+        }
+
+        function veriGetir() {
+            const sehir = document.getElementById('sehir-secim').value;
+            if (sehir) {
+                havaDurumuVerisiGetir(sehir);
+            } else {
+                alert('Lütfen bir şehir seçin');
+            }
+        }
+
+        function havaDurumuVerisiGetir(sehir) {
+            const apiKey = 'd24a2ed2faa05486d09af76eae633b35';
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${sehir},TR&appid=${apiKey}&units=metric`;
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP hatası! Durum: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const sicaklik = data.main.temp;
+                    const havaDurumuIkonu = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+                    const zamanDilimi = data.timezone;
+
+                    document.getElementById('sicaklik').textContent = `${sicaklik}°C`;
+                    document.getElementById('hava-durumu-ikonu').src = havaDurumuIkonu;
+                    document.getElementById('konum').textContent = `${sehir}, Türkiye`;
+
+                    saatiGuncelle(zamanDilimi);
+                    tarihiGuncelle(zamanDilimi);
+                })
+                .catch(error => {
+                    console.error('Hava durumu verisi getirme hatası:', error);
+                    alert('Hava durumu verisi getirilirken bir hata oluştu. Detaylar için konsolu kontrol edin.');
+                });
+        }
+
+        function saatiGuncelle(zamanDilimiOffset) {
+            const simdi = new Date(new Date().getTime() + zamanDilimiOffset * 1000);
+            const saat = simdi.getUTCHours();
+            const dakika = simdi.getUTCMinutes();
+            const saniye = simdi.getUTCSeconds();
+
+            const saatDerece = (saat % 12) * 30 + dakika * 0.5;
+            const dakikaDerece = dakika * 6 + saniye * 0.1;
+
+            document.querySelector('.hour-hand').style.transform = `translate(-50%, -100%) rotate(${saatDerece}deg)`;
+            document.querySelector('.minute-hand').style.transform = `translate(-50%, -100%) rotate(${dakikaDerece}deg)`;
+        }
+
+        function tarihiGuncelle(zamanDilimiOffset) {
+            const simdi = new Date(new Date().getTime() + zamanDilimiOffset * 1000);
+            const gun = simdi.getUTCDate();
+            const ay = simdi.getUTCMonth();
+            const yil = simdi.getUTCFullYear();
+
+            const tarih = new Date(Date.UTC(yil, ay, gun, simdi.getUTCHours(), simdi.getUTCMinutes(), simdi.getUTCSeconds()));
+            const trTarih = tarih.toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            document.getElementById('tarih').textContent = trTarih;
+        }
+
+        sehirSecenekleriGuncelle(); // İlk açılışta şehir seçeneklerini güncelle
+    </script>
+</body>
+</html>
